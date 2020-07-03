@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,22 +30,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthPresenter = withRouter(() => {
+const AuthPresenter = () => {
   const classes = useStyles();
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={8} />
-      <Grid
-        item
-        xs={12}
-        sm={8}
-        md={4}
-        elevation={6}
-        className={classes.menu}
-        square
-      >
+      <Grid item xs={12} sm={8} md={4} elevation={6} className={classes.menu}>
         <div className={classes.paper}>
           <Typography component="h1" variant="h3">
             ゆーちゅーる
@@ -53,19 +45,20 @@ const AuthPresenter = withRouter(() => {
           <Typography component="h4" variant="h5">
             個人YouTubeクリエイターのための会計システム
           </Typography>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Googleアカウントで始める
-          </Button>
-          <Link to="/main">sd</Link>
+          <Link to="/main" style={{ textDecoration: "none" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Googleアカウントで始める
+            </Button>
+          </Link>
         </div>
       </Grid>
     </Grid>
   );
-});
+};
 
 export default AuthPresenter;
