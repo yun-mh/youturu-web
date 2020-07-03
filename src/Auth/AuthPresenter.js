@@ -4,6 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link, withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthPresenter = ({ handleLogin }) => {
+const AuthPresenter = withRouter(() => {
   const classes = useStyles();
 
   return (
@@ -57,14 +58,14 @@ const AuthPresenter = ({ handleLogin }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleLogin}
           >
             Googleアカウントで始める
           </Button>
+          <Link to="/main">sd</Link>
         </div>
       </Grid>
     </Grid>
   );
-};
+});
 
 export default AuthPresenter;
