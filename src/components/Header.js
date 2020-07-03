@@ -7,11 +7,20 @@ import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import List from '@material-ui/core/List';
 import IconButton from "@material-ui/core/IconButton";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
+import Divider from '@material-ui/core/Divider';
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ListItems from './ListItems';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import PeopleIcon from '@material-ui/icons/People';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import LayersIcon from '@material-ui/icons/Layers';
 
 const drawerWidth = 240;
 
@@ -95,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default withRouter(({ location: { pathname } }) => {
+export default withRouter(({ location: { pathname }, children }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -148,15 +157,31 @@ export default withRouter(({ location: { pathname } }) => {
             <ChevronLeftIcon />
           </IconButton>
         </div>
+        <Divider />
+        <List>
+          <ListItem button>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="ダッシュボード" />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <ShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText primary="収入" />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="支出" />
+          </ListItem>
+        </List>  
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Typography component="h1" variant="h5">
-            ダッシュボード
-          </Typography>
-          <Grid container spacing={3}></Grid>
-        </Container>
+        { children }
       </main>
     </div>
   );

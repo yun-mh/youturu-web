@@ -8,12 +8,13 @@ import Header from "./components/Header";
 export default () => (
   <Router>
     <>
-      <Header />
-      <Switch>
-        <Route path="/main" exact component={Main} />
-        <Route path="/expenditure" component={Expenditure} />
-        <Route path="/revenue" component={Revenue} />
-      </Switch>
+      <Header>
+        <Switch>
+          <Route path="/" exact component={Main} />
+          <Route path="/expenditure" component={Expenditure} />
+          <Route path="/revenue" component={Revenue} />
+        </Switch>
+      </Header>
     </>
   </Router>
 );
