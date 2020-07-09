@@ -4,6 +4,7 @@ import Auth from "./Auth";
 import Main from "./Main";
 import Revenue from "./Revenue";
 import Expenditure from "./Expenditure";
+import Item from "./Item";
 import Header from "./components/Header";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/main" exact component={Main} />
           <Route path="/expense" exact component={Expenditure} />
           <Route path="/revenue" exact component={Revenue} />
+          <Route path="/item" exact component={Item} />
         </Header>
       </Switch>
     </Router>

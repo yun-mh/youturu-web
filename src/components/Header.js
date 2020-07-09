@@ -10,14 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import MenuIcon from "@material-ui/icons/Menu";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import SettingsIcon from '@material-ui/icons/Settings';
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import BarChartIcon from "@material-ui/icons/BarChart";
+import InputIcon from '@material-ui/icons/Input';
+import PaymentIcon from '@material-ui/icons/Payment';
 
 const drawerWidth = 240;
 
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: "#2196f3"
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -104,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
 export default withRouter(({ location: { pathname }, children }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -164,15 +167,21 @@ export default withRouter(({ location: { pathname }, children }) => {
           </ListItem>
           <ListItem button component={Link} to="/revenue">
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <InputIcon />
             </ListItemIcon>
             <ListItemText primary="収入" />
           </ListItem>
           <ListItem button component={Link} to="/expense">
             <ListItemIcon>
-              <BarChartIcon />
+              <PaymentIcon />
             </ListItemIcon>
             <ListItemText primary="支出" />
+          </ListItem>
+          <ListItem button component={Link} to="/item">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="項目設定" />
           </ListItem>
         </List>
       </Drawer>
