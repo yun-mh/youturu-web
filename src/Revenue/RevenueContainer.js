@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import RevenuePresenter from "./RevenuePresenter";
-import ItemTable from "../components/Table";
 
 const RevenueContainer = () => {
   const [rows, setRows] = useState([]);
@@ -51,7 +50,11 @@ const RevenueContainer = () => {
       amount,
       content,
     });
-    setRows(nextRows);
+    const sorted = nextRows.sort(
+      (first, second) =>
+        first.date.split("-").join("") - second.date.split("-").join("")
+    );
+    setRows(sorted);
     setId((id) => id + 1);
     setDate("");
     setGenre(types[0].genre);
@@ -82,6 +85,10 @@ const RevenueContainer = () => {
     selectRow.type = type;
     selectRow.amount = amount;
     selectRow.content = content;
+    rows.sort(
+      (first, second) =>
+        first.date.split("-").join("") - second.date.split("-").join("")
+    );
     setDate("");
     setGenre(types[0].genre);
     setType(types[0].types[0]);
