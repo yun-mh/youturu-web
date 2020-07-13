@@ -1,20 +1,19 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ItemTable from "../components/Table";
-import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import { green } from '@material-ui/core/colors';
-import SimpleModal from "../components/Modal";
+import TextField from "@material-ui/core/TextField";
+import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
+import { green } from "@material-ui/core/colors";
 
 const AddButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText(green[600]),
     backgroundColor: green[600],
-    '&:hover': {
+    "&:hover": {
       backgroundColor: green[900],
     },
   },
@@ -24,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
   toolBox: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   textField: {
     display: "flex",
     alignItems: "center",
-    '& .MuiTextField-root': {
+    "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: '15ch',
+      width: "15ch",
     },
   },
   container: {
@@ -40,24 +39,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RevenuePresenter = () => {
+const RevenuePresenter = ({
+  rows,
+  setRows,
+  id,
+  setId,
+  date,
+  setDate,
+  genre,
+  type,
+  types,
+  setType,
+  amount,
+  setAmount,
+  content,
+  setContent,
+  addOpen,
+  setAddOpen,
+  modifyId,
+  setModifyId,
+  modifyOpen,
+  setModifyOpen,
+  handleAddOpen,
+  handleModifyOpen,
+  handleAddClose,
+  handleModifyClose,
+  handleSubmit,
+  handleModify,
+  handleModifySubmit,
+  handleDelete,
+  eachCategory,
+  setEachCategory,
+  handleEachCategory,
+}) => {
   const classes = useStyles();
-  const [addOpen, setAddOpen] = React.useState(false);
-
-  const handleAddOpen = () => {
-    setAddOpen(true);
-  };
-
-  const handleAddClose = () => {
-    setAddOpen(false);
-  };
 
   return (
-    <Container container maxWidth="lg" className={classes.container}>
+    <Container container="true" maxWidth="lg" className={classes.container}>
       <Typography component="h1" variant="h5">
         収入一覧
       </Typography>
-      <Box container mt={3} className={classes.toolBox}>
+      <Box container="true" mt={3} className={classes.toolBox}>
         <div className={classes.textField}>
           <TextField
             id="outlined-number"
@@ -82,19 +104,40 @@ const RevenuePresenter = () => {
         </div>
         <div>
           <AddButton
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          startIcon={<AddIcon />}
-          onClick={handleAddOpen}
+            variant="contained"
+            className={classes.button}
+            startIcon={<AddIcon />}
+            onClick={handleAddOpen}
           >
             追加
           </AddButton>
         </div>
       </Box>
-        <SimpleModal open={addOpen} handleClose={handleAddClose} />
-      <Box container mt={3}>
-        <ItemTable />
+      <Box container="true" mt={3}>
+        <ItemTable
+          rows={rows}
+          date={date}
+          setDate={setDate}
+          genre={genre}
+          type={type}
+          types={types}
+          setType={setType}
+          amount={amount}
+          setAmount={setAmount}
+          content={content}
+          setContent={setContent}
+          addOpen={addOpen}
+          modifyId={modifyId}
+          modifyOpen={modifyOpen}
+          handleAddClose={handleAddClose}
+          handleModifyClose={handleModifyClose}
+          handleSubmit={handleSubmit}
+          handleModify={handleModify}
+          handleModifySubmit={handleModifySubmit}
+          handleDelete={handleDelete}
+          eachCategory={eachCategory}
+          handleEachCategory={handleEachCategory}
+        />
       </Box>
     </Container>
   );

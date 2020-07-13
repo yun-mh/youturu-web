@@ -1,12 +1,42 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import { FormControl, InputLabel, OutlinedInput, InputAdornment, TextField, Select, MenuItem } from '@material-ui/core';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import {
+  FormControl,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  withStyles,
+  Box,
+} from "@material-ui/core";
+import { green, grey, blue } from "@material-ui/core/colors";
 
+const GenreButton = withStyles((theme) => ({}))(Button);
+
+const AddButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green[600]),
+    backgroundColor: green[600],
+    "&:hover": {
+      backgroundColor: green[900],
+    },
+  },
+}))(Button);
+
+const CancelButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(grey[600]),
+    backgroundColor: grey[600],
+    "&:hover": {
+      backgroundColor: grey[900],
+    },
+  },
+}))(Button);
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
+    position: "absolute",
     width: 600,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
@@ -22,88 +52,296 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    '& .MuiTextField-root': {
+    "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: '30ch',
+      width: "30ch",
     },
-  }
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    width: "30ch",
+  },
 }));
 
-export default function SimpleModal({open, handleClose}) {
+export const AddModal = ({
+  genre,
+  open,
+  handleClose,
+  date,
+  types,
+  setDate,
+  amount,
+  setAmount,
+  type,
+  setType,
+  content,
+  setContent,
+  handleSubmit,
+  eachCategory,
+  handleEachCategory,
+}) => {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
-  const [item, setItem] = React.useState();
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
 
   return (
-    <div >
+    <div>
       <Modal open={open} onClose={handleClose}>
         <div className={classes.modalStyle}>
-            <div className={classes.paper}>
-                <div className={classes.textField}>
-                    <span>日付</span>
-                    <TextField
-                        id="outlined-number"
-                        type="number"
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                        variant="outlined"
-                        size="small"
-                    />
-                </div>
-                <div className={classes.textField}>    
-                    <span>項目</span>
-                    <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={item}
-                        onChange={handleChange}
-                        >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </div>
-                <div className={classes.textField}>    
-                    <span>金額</span>
-                    <TextField
-                        id="outlined-number"
-                        type="number"
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                        variant="outlined"
-                        size="small"
-                    />
-                </div>
-                <div className={classes.textField}>    
-                    <span>内容</span>
-                    <TextField
-                        id="outlined-number"
-                        type="number"
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                        variant="outlined"
-                        size="small"
-                    />
-                </div>
+          <div className={classes.paper}>
+            <Box
+              mb={3}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              {types.map((type) => (
+                <GenreButton
+                  key={type.genre}
+                  onClick={() => handleEachCategory(type)}
+                  style={{
+                    color: genre === type.genre ? "white" : "inherit",
+                    backgroundColor:
+                      genre === type.genre ? blue[300] : grey[200],
+                  }}
+                >
+                  {type.genre}
+                </GenreButton>
+              ))}
+            </Box>
+            <div className={classes.textField}>
+              <span>日付</span>
+              <TextField
+                id="outlined-number"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
             </div>
+            <div className={classes.textField}>
+              <span>項目</span>
+              <FormControl className={classes.formControl}>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={type}
+                  defaultValue={eachCategory[0]}
+                  onChange={(e) => setType(e.target.value)}
+                >
+                  {eachCategory.map((category, index) => (
+                    <MenuItem
+                      key={index}
+                      value={category}
+                      selected={index === 0 ? true : false}
+                    >
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div className={classes.textField}>
+              <span>金額</span>
+              <TextField
+                id="outlined-number"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
+            <div className={classes.textField}>
+              <span>内容</span>
+              <TextField
+                id="outlined-number"
+                type="text"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </div>
+            <Box
+              mt={3}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              <CancelButton
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleClose}
+              >
+                キャンセル
+              </CancelButton>
+              <AddButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleSubmit}
+              >
+                追加
+              </AddButton>
+            </Box>
+          </div>
         </div>
       </Modal>
     </div>
   );
-}
+};
+
+export const ModifyModal = ({
+  open,
+  handleClose,
+  date,
+  genre,
+  types,
+  setDate,
+  amount,
+  setAmount,
+  type,
+  setType,
+  content,
+  setContent,
+  handleModifySubmit,
+  modifyId,
+  eachCategory,
+  handleEachCategory,
+}) => {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <Modal open={open} onClose={handleClose}>
+        <div className={classes.modalStyle}>
+          <div className={classes.paper}>
+            <Box
+              mb={3}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              {types.map((type) => (
+                <GenreButton
+                  key={type.genre}
+                  onClick={() => handleEachCategory(type)}
+                  style={{
+                    color: genre === type.genre ? "white" : "inherit",
+                    backgroundColor:
+                      genre === type.genre ? blue[300] : grey[200],
+                  }}
+                >
+                  {type.genre}
+                </GenreButton>
+              ))}
+            </Box>
+            <div className={classes.textField}>
+              <span>日付</span>
+              <TextField
+                id="outlined-number"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+            <div className={classes.textField}>
+              <span>項目</span>
+              <FormControl className={classes.formControl}>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={type}
+                  defaultValue={eachCategory[0]}
+                  onChange={(e) => setType(e.target.value)}
+                >
+                  {eachCategory.map((category, index) => (
+                    <MenuItem key={index} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div className={classes.textField}>
+              <span>金額</span>
+              <TextField
+                id="outlined-number"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
+            <div className={classes.textField}>
+              <span>内容</span>
+              <TextField
+                id="outlined-number"
+                type="text"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </div>
+            <Box
+              mt={3}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              <CancelButton
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleClose}
+              >
+                キャンセル
+              </CancelButton>
+              <AddButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={() => handleModifySubmit(modifyId)}
+              >
+                修正
+              </AddButton>
+            </Box>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+};
