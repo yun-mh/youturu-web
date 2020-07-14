@@ -3,11 +3,11 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import ItemTable from "../components/Table";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import { green } from "@material-ui/core/colors";
+import RevenueTable from "../components/RevenueTable";
 
 const AddButton = withStyles((theme) => ({
   root: {
@@ -114,7 +114,7 @@ const RevenuePresenter = ({
         </div>
       </Box>
       <Box container="true" mt={3}>
-        <ItemTable
+        <RevenueTable
           rows={rows}
           date={date}
           setDate={setDate}

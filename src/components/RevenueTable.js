@@ -115,7 +115,7 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function ItemTable({
+export default function RevenueTable({
   rows,
   date,
   setDate,
