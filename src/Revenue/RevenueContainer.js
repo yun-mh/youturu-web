@@ -1,23 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import RevenuePresenter from "./RevenuePresenter";
+import { firestore } from "../firebase";
 
 const RevenueContainer = () => {
   const [rows, setRows] = useState([]);
-  const [types] = useState([
-    { genre: "ゲーム", types: ["キャスター報酬", "テスター報酬"] },
-    { genre: "音楽", types: ["著作権収入"] },
-    { genre: "健康", types: ["トレーニング報酬"] },
-  ]);
-  const [eachCategory, setEachCategory] = useState([...types[0].types]);
-  const [id, setId] = useState(0);
+  const [types, setTypes] = useState([]);
+  const [eachCategory, setEachCategory] = useState([]);
   const [date, setDate] = useState("");
-  const [genre, setGenre] = useState(types[0].genre);
-  const [type, setType] = useState(types[0].types[0]);
+  const [genre, setGenre] = useState();
+  const [type, setType] = useState();
   const [amount, setAmount] = useState("");
   const [content, setContent] = useState("");
   const [addOpen, setAddOpen] = useState(false);
   const [modifyId, setModifyId] = useState("");
   const [modifyOpen, setModifyOpen] = useState(false);
+
+  const fetchTypes = async () => {
+    let typesData = [];
+    await firestore
+      .collection("test_revenue_type")
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          typesData.push({ genre: doc.data().genre, types: doc.data().types });
+        });
+      });
+    await setTypes(typesData);
+    await setEachCategory(typesData[0]?.types);
+    await setGenre(typesData[0]?.genre);
+    await setType(typesData[0]?.types[0]);
+    return;
+  };
+
+  const fetchRows = async () => {
+    let rowsData = [];
+    await firestore
+      .collection("test_revenue")
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          rowsData.push({
+            id: doc.id,
+            date: doc.data().date,
+            genre: doc.data().genre,
+            type: doc.data().type,
+            amount: doc.data().amount,
+            content: doc.data().content,
+          });
+        });
+      });
+    await setRows(rowsData);
+    return;
+  };
+
+  useEffect(() => {
+    fetchTypes();
+    fetchRows();
+  }, []);
 
   const handleAddOpen = () => {
     setAddOpen(true);
@@ -42,20 +81,24 @@ const RevenueContainer = () => {
   };
 
   const handleSubmit = () => {
-    const nextRows = rows.concat({
-      id,
-      date,
-      genre,
-      type,
-      amount,
-      content,
-    });
-    const sorted = nextRows.sort(
-      (first, second) =>
-        first.date.split("-").join("") - second.date.split("-").join("")
-    );
-    setRows(sorted);
-    setId((id) => id + 1);
+    firestore
+      .collection("test_revenue")
+      .add({ date, genre, type, amount, content })
+      .then((res) => {
+        const nextRows = rows.concat({
+          id: res.id,
+          date,
+          genre,
+          type,
+          amount,
+          content,
+        });
+        const sorted = nextRows.sort(
+          (first, second) =>
+            first.date.split("-").join("") - second.date.split("-").join("")
+        );
+        setRows(sorted);
+      });
     setDate("");
     setGenre(types[0].genre);
     setType(types[0].types[0]);
@@ -100,16 +143,20 @@ const RevenueContainer = () => {
   };
 
   const handleDelete = (id) => {
-    const nextRows = rows.filter((row) => row.id !== id);
-    setRows(nextRows);
+    firestore
+      .collection("test_revenue")
+      .doc(id)
+      .delete()
+      .then(() => {
+        const nextRows = rows.filter((row) => row.id !== id);
+        setRows(nextRows);
+      });
   };
 
   return (
     <RevenuePresenter
       rows={rows}
       setRows={setRows}
-      id={id}
-      setId={setId}
       date={date}
       setDate={setDate}
       genre={genre}
