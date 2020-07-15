@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import RevenuePresenter from "./RevenuePresenter";
 import { firestore } from "../firebase";
 
@@ -41,7 +41,7 @@ const RevenueContainer = () => {
         docs.forEach((doc) => {
           rowsData.push({
             id: doc.id,
-            date: doc.data().date,
+            date: doc.data().date.toDate().toISOString().slice(0, 10),
             genre: doc.data().genre,
             type: doc.data().type,
             amount: doc.data().amount,
@@ -83,7 +83,7 @@ const RevenueContainer = () => {
   const handleSubmit = () => {
     firestore
       .collection("test_revenue")
-      .add({ date, genre, type, amount, content })
+      .add({ date: new Date(date), genre, type, amount, content })
       .then((res) => {
         const nextRows = rows.concat({
           id: res.id,
@@ -121,25 +121,32 @@ const RevenueContainer = () => {
     handleModifyOpen();
   };
 
-  const handleModifySubmit = (id) => {
-    const selectRow = rows.find((row) => row.id === id);
-    selectRow.date = date;
-    selectRow.genre = genre;
-    selectRow.type = type;
-    selectRow.amount = amount;
-    selectRow.content = content;
-    rows.sort(
-      (first, second) =>
-        first.date.split("-").join("") - second.date.split("-").join("")
-    );
-    setDate("");
-    setGenre(types[0].genre);
-    setType(types[0].types[0]);
-    setEachCategory([...types[0].types]);
-    setAmount("");
-    setContent("");
-    setModifyId("");
-    handleModifyClose();
+  const handleModifySubmit = async (id) => {
+    firestore
+      .collection("test_revenue")
+      .doc(id)
+      .update({ date, genre, type, amount, content })
+      .then((res) => {
+        const selectRow = rows.find((row) => row.id === id);
+        selectRow.date = date;
+        selectRow.genre = genre;
+        selectRow.type = type;
+        selectRow.amount = amount;
+        selectRow.content = content;
+        const sorted = rows.sort(
+          (first, second) =>
+            first.date.split("-").join("") - second.date.split("-").join("")
+        );
+        setRows(sorted);
+        setDate("");
+        setGenre(types[0].genre);
+        setType(types[0].types[0]);
+        setEachCategory([...types[0].types]);
+        setAmount("");
+        setContent("");
+        setModifyId("");
+        handleModifyClose();
+      });
   };
 
   const handleDelete = (id) => {
