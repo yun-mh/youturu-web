@@ -64,35 +64,48 @@ const MainPresenter = ({
       <Typography component="h1" variant="h5">
         ダッシュボード
       </Typography>
-      <Grid container spacing={3}></Grid>
-      <div className={classes.box}>
-        <div className={classes.data}>
-          <table className={classes.table}>
-            <tr>
-              <th className={classes.dateData} colSpan="2">
-                2020年7月現在
-              </th>
-            </tr>
-            <tr>
-              <td className={classes.revData}>￥{monthlyRevenueTotal}</td>
-              <td className={classes.expData}>￥{monthlyExpenditureTotal}</td>
-            </tr>
-          </table>
+      <Grid container spacing={3}>
+        <div className={classes.box}>
+          <div className={classes.data}>
+            <table className={classes.table}>
+              <thead>
+                <tr>
+                  <th className={classes.dateData} colSpan="2">
+                    2020年7月現在
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className={classes.revData}>￥{monthlyRevenueTotal}</td>
+                  <td className={classes.expData}>
+                    ￥{monthlyExpenditureTotal}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className={classes.data}>
+            <table className={classes.table}>
+              <thead>
+                <tr>
+                  <th className={classes.dateData} colSpan="2">
+                    2020年現在
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className={classes.revData}>￥{yearlyRevenueTotal}</td>
+                  <td className={classes.expData}>
+                    ￥{yearlyExpenditureTotal}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className={classes.data}>
-          <table className={classes.table}>
-            <tr>
-              <th className={classes.dateData} colSpan="2">
-                2020年現在
-              </th>
-            </tr>
-            <tr>
-              <td className={classes.revData}>￥{yearlyRevenueTotal}</td>
-              <td className={classes.expData}>￥{yearlyExpenditureTotal}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
+      </Grid>
     </Container>
   );
 };

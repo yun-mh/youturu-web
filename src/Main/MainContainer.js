@@ -14,7 +14,7 @@ const MainContainer = () => {
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     let total = 0;
     await firestore
-      .collection("test_revenue")
+      .collection("income")
       .where("date", ">=", firstDay)
       .where("date", "<=", lastDay)
       .get()
@@ -33,7 +33,7 @@ const MainContainer = () => {
     const lastDay = new Date(date.getFullYear(), 12, 0);
     let total = 0;
     await firestore
-      .collection("test_revenue")
+      .collection("income")
       .where("date", ">=", firstDay)
       .where("date", "<=", lastDay)
       .get()
@@ -46,9 +46,49 @@ const MainContainer = () => {
     return;
   };
 
+  const fetchCurrentMonthExpenditureData = async () => {
+    const date = new Date();
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    let total = 0;
+    await firestore
+      .collection("expense")
+      .where("date", ">=", firstDay)
+      .where("date", "<=", lastDay)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          total += parseInt(doc.data().amount);
+        });
+      });
+    await setMontlyExpenditureTotal(total);
+    return;
+  };
+
+  const fetchCurrentYearExpenditureData = async () => {
+    const date = new Date();
+    const firstDay = new Date(date.getFullYear(), 0, 1);
+    const lastDay = new Date(date.getFullYear(), 12, 0);
+    let total = 0;
+    await firestore
+      .collection("expense")
+      .where("date", ">=", firstDay)
+      .where("date", "<=", lastDay)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          total += parseInt(doc.data().amount);
+        });
+      });
+    await setYearlyExpenditureTotal(total);
+    return;
+  };
+
   useEffect(() => {
     fetchCurrentMonthRevenueData();
     fetchCurrentYearRevenueData();
+    fetchCurrentMonthExpenditureData();
+    fetchCurrentYearExpenditureData();
   });
 
   return (

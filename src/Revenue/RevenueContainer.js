@@ -18,11 +18,14 @@ const RevenueContainer = () => {
   const fetchTypes = async () => {
     let typesData = [];
     await firestore
-      .collection("test_revenue_type")
+      .collection("income_category")
       .get()
       .then((docs) => {
         docs.forEach((doc) => {
-          typesData.push({ genre: doc.data().genre, types: doc.data().types });
+          typesData.push({
+            genre: doc.data().genre,
+            types: doc.data().category,
+          });
         });
       });
     await setTypes(typesData);
@@ -35,7 +38,7 @@ const RevenueContainer = () => {
   const fetchRows = async () => {
     let rowsData = [];
     await firestore
-      .collection("test_revenue")
+      .collection("income")
       .get()
       .then((docs) => {
         docs.forEach((doc) => {
@@ -43,7 +46,7 @@ const RevenueContainer = () => {
             id: doc.id,
             date: doc.data().date.toDate().toISOString().slice(0, 10),
             genre: doc.data().genre,
-            type: doc.data().type,
+            type: doc.data().category,
             amount: doc.data().amount,
             content: doc.data().content,
           });
@@ -82,8 +85,14 @@ const RevenueContainer = () => {
 
   const handleSubmit = () => {
     firestore
-      .collection("test_revenue")
-      .add({ date: new Date(date), genre, type, amount, content })
+      .collection("income")
+      .add({
+        date: new Date(date),
+        genre,
+        category: type,
+        amount: parseInt(amount),
+        content,
+      })
       .then((res) => {
         const nextRows = rows.concat({
           id: res.id,
@@ -123,9 +132,9 @@ const RevenueContainer = () => {
 
   const handleModifySubmit = async (id) => {
     firestore
-      .collection("test_revenue")
+      .collection("income")
       .doc(id)
-      .update({ date, genre, type, amount, content })
+      .update({ date, genre, type, amount: parseInt(amount), content })
       .then((res) => {
         const selectRow = rows.find((row) => row.id === id);
         selectRow.date = date;
@@ -151,7 +160,7 @@ const RevenueContainer = () => {
 
   const handleDelete = (id) => {
     firestore
-      .collection("test_revenue")
+      .collection("income")
       .doc(id)
       .delete()
       .then(() => {
