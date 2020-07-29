@@ -28,6 +28,18 @@ const RevenueContainer = () => {
           });
         });
       });
+    await firestore
+      .collection("income_customized")
+      .where("id", "==", "123@gmail.com") // 仮の設定（ログイン実装後に修正要）
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          typesData.push({
+            genre: "カスタム",
+            types: doc.data().category,
+          });
+        });
+      });
     await setTypes(typesData);
     await setEachCategory(typesData[0]?.types);
     await setGenre(typesData[0]?.genre);
@@ -39,6 +51,7 @@ const RevenueContainer = () => {
     let rowsData = [];
     await firestore
       .collection("income")
+      .where("id", "==", "123@gmail.com") // 仮の設定（ログイン実装後に変更要）
       .get()
       .then((docs) => {
         docs.forEach((doc) => {
@@ -87,6 +100,7 @@ const RevenueContainer = () => {
     firestore
       .collection("income")
       .add({
+        id: "123@gmail.com", // 仮の設定（ログイン実装後に変更要）
         date: new Date(date),
         genre,
         category: type,
@@ -134,7 +148,13 @@ const RevenueContainer = () => {
     firestore
       .collection("income")
       .doc(id)
-      .update({ date, genre, type, amount: parseInt(amount), content })
+      .update({
+        date: new Date(date),
+        genre,
+        category: type,
+        amount: parseInt(amount),
+        content,
+      })
       .then((res) => {
         const selectRow = rows.find((row) => row.id === id);
         selectRow.date = date;

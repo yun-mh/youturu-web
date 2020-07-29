@@ -41,9 +41,6 @@ const useStyles = makeStyles((theme) => ({
 
 const RevenuePresenter = ({
   rows,
-  setRows,
-  id,
-  setId,
   date,
   setDate,
   genre,
@@ -55,13 +52,9 @@ const RevenuePresenter = ({
   content,
   setContent,
   addOpen,
-  setAddOpen,
   modifyId,
-  setModifyId,
   modifyOpen,
-  setModifyOpen,
   handleAddOpen,
-  handleModifyOpen,
   handleAddClose,
   handleModifyClose,
   handleSubmit,
@@ -69,7 +62,6 @@ const RevenuePresenter = ({
   handleModifySubmit,
   handleDelete,
   eachCategory,
-  setEachCategory,
   handleEachCategory,
 }) => {
   const classes = useStyles();
