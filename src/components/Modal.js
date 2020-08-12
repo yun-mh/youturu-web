@@ -121,6 +121,7 @@ export const AddModal = ({
                 size="small"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                required={true}
               />
             </div>
             <div className={classes.textField}>
@@ -157,6 +158,7 @@ export const AddModal = ({
                 size="small"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                required={true}
               />
             </div>
             <div className={classes.textField}>
@@ -171,6 +173,7 @@ export const AddModal = ({
                 size="small"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                required={true}
               />
             </div>
             <Box
@@ -265,6 +268,7 @@ export const ModifyModal = ({
                 size="small"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                required={true}
               />
             </div>
             <div className={classes.textField}>
@@ -297,6 +301,7 @@ export const ModifyModal = ({
                 size="small"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                required={true}
               />
             </div>
             <div className={classes.textField}>
@@ -311,6 +316,7 @@ export const ModifyModal = ({
                 size="small"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                required={true}
               />
             </div>
             <Box

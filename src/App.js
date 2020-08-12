@@ -1,25 +1,33 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Auth from "./Auth";
-import Main from "./Main";
-import Revenue from "./Revenue";
-import Expenditure from "./Expenditure";
-import Item from "./Item";
-import Header from "./components/Header";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import Route from "./Route";
+import UserProvider from "./UserProvider";
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      "M PLUS Rounded 1c",
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+    ].join(","),
+  },
+  pallete: {
+    white: {
+      main: "#fff",
+    },
+  },
+});
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Auth} />
-        <Header>
-          <Route path="/main" exact component={Main} />
-          <Route path="/expense" exact component={Expenditure} />
-          <Route path="/revenue" exact component={Revenue} />
-          <Route path="/item" exact component={Item} />
-        </Header>
-      </Switch>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <UserProvider>
+        <Route />
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 

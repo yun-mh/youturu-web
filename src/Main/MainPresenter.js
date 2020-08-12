@@ -71,7 +71,7 @@ const MainPresenter = ({
               <thead>
                 <tr>
                   <th className={classes.dateData} colSpan="2">
-                    2020年7月現在
+                    2020年{new Date().getMonth() + 1}月現在
                   </th>
                 </tr>
               </thead>
