@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ItemPresenter from "./ItemPresenter";
 import { firestore, db } from "../firebase";
+import { UserContext } from "../UserProvider";
 
 const ItemContainer = () => {
+  const user = useContext(UserContext);
+
   const [eachRevCategory, setEachRevCategory] = useState([]);
   const [revType, setRevType] = useState();
   const [revContent, setRevContent] = useState("");
@@ -12,35 +15,41 @@ const ItemContainer = () => {
   const [expContent, setExpContent] = useState("");
 
   const fetchTypes = async () => {
+    const target = await user;
     let typesRevData = [];
     let typesExpData = [];
-    await firestore
-      .collection("income_customized")
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          typesRevData.push({
-            id: doc.data().id,
-            types: doc.data().category,
-          });
-        });
-      });
-    await setEachRevCategory(typesRevData[0]?.types);
-    await setRevType(typesRevData[0]?.types[0]);
 
-    await firestore
-      .collection("expense_customized")
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          typesExpData.push({
-            id: doc.data().id,
-            types: doc.data().category,
+    if (target) {
+      await firestore
+        .collection("income_customized")
+        .where("id", "==", target.email)
+        .get()
+        .then((docs) => {
+          docs.forEach((doc) => {
+            typesRevData.push({
+              id: doc.data().id,
+              types: doc.data().category,
+            });
           });
         });
-      });
-    await setEachExpCategory(typesExpData[0]?.types);
-    await setExpType(typesExpData[0]?.types[0]);
+      await setEachRevCategory(typesRevData[0]?.types || []);
+      await setRevType(typesRevData[0]?.types[0]);
+
+      await firestore
+        .collection("expense_customized")
+        .where("id", "==", target.email)
+        .get()
+        .then((docs) => {
+          docs.forEach((doc) => {
+            typesExpData.push({
+              id: doc.data().id,
+              types: doc.data().category,
+            });
+          });
+        });
+      await setEachExpCategory(typesExpData[0]?.types || []);
+      await setExpType(typesExpData[0]?.types[0]);
+    }
     return;
   };
 
@@ -48,7 +57,13 @@ const ItemContainer = () => {
     fetchTypes();
   }, []);
 
-  const handleRevSubmit = (e) => {
+  const handleRevSubmit = async (e) => {
+    e.preventDefault();
+    e.target.reset();
+
+    let exist, docId;
+    const target = await user;
+
     if (!revContent) {
       return null;
     } else {
@@ -59,30 +74,70 @@ const ItemContainer = () => {
       }
     }
 
-    firestore
+    await firestore
       .collection("income_customized")
-      .doc("SfkT2L1HH3t71Evdhd87")
-      .update({
-        category: db.FieldValue.arrayUnion(revContent),
+      .where("id", "==", target.email)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          if (!doc.empty) {
+            exist = true;
+            docId = doc.id;
+          } else {
+            exist = false;
+          }
+        });
       });
-    e.target.reset();
-    e.preventDefault();
+    if (!exist) {
+      await firestore.collection("income_customized").add({
+        id: target.email,
+        category: [revContent],
+      });
+    } else {
+      await firestore
+        .collection("income_customized")
+        .doc(docId)
+        .update({
+          category: db.FieldValue.arrayUnion(revContent),
+        });
+    }
+
     setRevContent("");
   };
 
-  const handleRevDelete = (item) => {
-    firestore
+  const handleRevDelete = async (item) => {
+    let docId;
+    const target = await user;
+
+    await firestore
       .collection("income_customized")
-      .doc("SfkT2L1HH3t71Evdhd87")
+      .where("id", "==", target.email)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          docId = doc.id;
+        });
+      });
+
+    await firestore
+      .collection("income_customized")
+      .doc(docId)
       .update({
         category: db.FieldValue.arrayRemove(item),
       });
+
     setEachRevCategory((eachRevCategory) =>
       eachRevCategory.filter((list) => list !== item)
     );
   };
 
-  const handleExpSubmit = (e) => {
+  const handleExpSubmit = async (e) => {
+    e.preventDefault();
+    e.target.reset();
+
+    let exist, docId;
+    const target = await user;
+
     if (!expContent) {
       return null;
     } else {
@@ -92,24 +147,59 @@ const ItemContainer = () => {
         setEachExpCategory((list) => [...list, expContent]);
       }
     }
-    firestore
+
+    await firestore
       .collection("expense_customized")
-      .doc("fm6q4kU1cF4VHyIXL0OR")
-      .update({
-        category: db.FieldValue.arrayUnion(expContent),
+      .where("id", "==", target.email)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          if (!doc.empty) {
+            exist = true;
+            docId = doc.id;
+          } else {
+            exist = false;
+          }
+        });
       });
-    e.target.reset();
-    e.preventDefault();
+    if (!exist) {
+      await firestore.collection("expense_customized").add({
+        id: target.email,
+        category: [expContent],
+      });
+    } else {
+      await firestore
+        .collection("expense_customized")
+        .doc(docId)
+        .update({
+          category: db.FieldValue.arrayUnion(expContent),
+        });
+    }
+
     setExpContent("");
   };
 
-  const handleExpDelete = (item) => {
-    firestore
+  const handleExpDelete = async (item) => {
+    let docId;
+    const target = await user;
+
+    await firestore
       .collection("expense_customized")
-      .doc("fm6q4kU1cF4VHyIXL0OR")
+      .where("id", "==", target.email)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          docId = doc.id;
+        });
+      });
+
+    await firestore
+      .collection("expense_customized")
+      .doc(docId)
       .update({
         category: db.FieldValue.arrayRemove(item),
       });
+
     setEachExpCategory((eachExpCategory) =>
       eachExpCategory.filter((list) => list !== item)
     );

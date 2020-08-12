@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "0",
   },
   form: {
-    textAlign: "center",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     border: "2px solid #C7C7C7",
     borderBottomWidth: "0",
     padding: "1em",
@@ -40,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   textInput: {
     fontSize: "1.5em",
     borderColor: "#dfdfdf",
-    marginTop: "0.3em",
   },
   textSubmit: {
     color: "#ffffff",
@@ -112,17 +114,18 @@ const ItemPresenter = ({
             <input type="submit" value="追加" className={classes.textSubmit} />
           </form>
           <div className={classes.list}>
-            {eachRevCategory.map((item, index) => (
-              <div key={index} value={item} className={classes.item}>
-                {item}
-                <input
-                  type="button"
-                  value="X"
-                  onClick={() => handleRevDelete(item)}
-                  className={classes.deleteBtn}
-                />
-              </div>
-            ))}
+            {eachRevCategory !== undefined &&
+              eachRevCategory.map((item, index) => (
+                <div key={index} value={item} className={classes.item}>
+                  {item}
+                  <input
+                    type="button"
+                    value="X"
+                    onClick={() => handleRevDelete(item)}
+                    className={classes.deleteBtn}
+                  />
+                </div>
+              ))}
           </div>
         </div>
         <div className={classes.itemBox}>
@@ -137,17 +140,18 @@ const ItemPresenter = ({
             <input type="submit" value="追加" className={classes.textSubmit} />
           </form>
           <div className={classes.list}>
-            {eachExpCategory.map((item, index) => (
-              <div key={index} value={item} className={classes.item}>
-                {item}
-                <input
-                  type="button"
-                  value="X"
-                  onClick={() => handleExpDelete(item)}
-                  className={classes.deleteBtn}
-                />
-              </div>
-            ))}
+            {eachExpCategory !== undefined &&
+              eachExpCategory.map((item, index) => (
+                <div key={index} value={item} className={classes.item}>
+                  {item}
+                  <input
+                    type="button"
+                    value="X"
+                    onClick={() => handleExpDelete(item)}
+                    className={classes.deleteBtn}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>
