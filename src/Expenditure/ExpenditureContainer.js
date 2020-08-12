@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ExpenditurePresenter from "./ExpenditurePresenter";
 import { firestore } from "../firebase";
+import { UserContext } from "../UserProvider";
 
 const ExpenditureContainer = () => {
+  const user = useContext(UserContext);
+
   const [rows, setRows] = useState([]);
   const [types, setTypes] = useState([]);
   const [eachCategory, setEachCategory] = useState([]);
@@ -16,6 +19,7 @@ const ExpenditureContainer = () => {
   const [modifyOpen, setModifyOpen] = useState(false);
 
   const fetchTypes = async () => {
+    const target = await user;
     let typesData = [];
     await firestore
       .collection("expense_category")
@@ -28,45 +32,50 @@ const ExpenditureContainer = () => {
           });
         });
       });
-    await firestore
-      .collection("expense_customized")
-      .where("id", "==", "123@gmail.com") // 仮の設定（ログイン実装後に修正要）
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          typesData.push({
-            genre: "カスタム",
-            types: doc.data().category,
+    if (target) {
+      await firestore
+        .collection("expense_customized")
+        .where("id", "==", target.email)
+        .get()
+        .then((docs) => {
+          docs.forEach((doc) => {
+            typesData.push({
+              genre: "カスタム",
+              types: doc.data().category,
+            });
           });
         });
-      });
-    await setTypes(typesData);
-    await setEachCategory(typesData[0]?.types);
-    await setGenre(typesData[0]?.genre);
-    await setType(typesData[0]?.types[0]);
-    return;
+      await setTypes(typesData);
+      await setEachCategory(typesData[0]?.types);
+      await setGenre(typesData[0]?.genre);
+      await setType(typesData[0]?.types[0]);
+      return;
+    }
   };
 
   const fetchRows = async () => {
+    const target = await user;
     let rowsData = [];
-    await firestore
-      .collection("expense")
-      .where("id", "==", "123@gmail.com") // 仮の設定（ログイン実装後に変更要）
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          rowsData.push({
-            id: doc.id,
-            date: doc.data().date.toDate().toISOString().slice(0, 10),
-            genre: doc.data().genre,
-            type: doc.data().category,
-            amount: doc.data().amount,
-            content: doc.data().content,
+    if (target) {
+      await firestore
+        .collection("expense")
+        .where("id", "==", target.email)
+        .get()
+        .then((docs) => {
+          docs.forEach((doc) => {
+            rowsData.push({
+              id: doc.id,
+              date: doc.data().date.toDate().toISOString().slice(0, 10),
+              genre: doc.data().genre,
+              type: doc.data().category,
+              amount: doc.data().amount,
+              content: doc.data().content,
+            });
           });
         });
-      });
-    await setRows(rowsData);
-    return;
+      await setRows(rowsData);
+      return;
+    }
   };
 
   useEffect(() => {
@@ -96,11 +105,18 @@ const ExpenditureContainer = () => {
     setType(types[0]);
   };
 
-  const handleSubmit = () => {
-    firestore
+  const handleSubmit = async () => {
+    const target = await user;
+
+    if (date === "" || amount === "" || content === "") {
+      alert("すべての項目を入力してください。");
+      return;
+    }
+
+    await firestore
       .collection("expense")
       .add({
-        id: "123@gmail.com", // 仮の設定（ログイン実装後に変更要）
+        id: target.email,
         date: new Date(date),
         genre,
         category: type,
@@ -145,7 +161,12 @@ const ExpenditureContainer = () => {
   };
 
   const handleModifySubmit = async (id) => {
-    firestore
+    if (date === "" || amount === "" || content === "") {
+      alert("すべての項目を入力してください。");
+      return;
+    }
+
+    await firestore
       .collection("expense")
       .doc(id)
       .update({
