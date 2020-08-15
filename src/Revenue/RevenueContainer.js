@@ -6,7 +6,6 @@ import { UserContext } from "../UserProvider";
 const RevenueContainer = () => {
   const user = useContext(UserContext);
 
-  const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [types, setTypes] = useState([]);
   const [eachCategory, setEachCategory] = useState([]);

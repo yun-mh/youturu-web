@@ -20,8 +20,8 @@ export default () => {
   return (
     <Router>
       <Switch>
-        <Route path="/" exact component={SignIn} />
         <Auth>
+          <Route path="/" exact component={SignIn} />
           <Header user={user}>
             <Route path="/main" exact component={Main} />
             <Route path="/expense" exact component={Expenditure} />

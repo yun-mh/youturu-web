@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { auth } from "./firebase";
+import RedirectLoader from "./components/RedirectLoader";
 
 class Auth extends React.Component {
   state = {
@@ -21,7 +22,6 @@ class Auth extends React.Component {
             signedIn: true,
           });
         }
-        console.log(this.state);
       } else {
         if (this._isMounted) {
           this.setState({
@@ -40,7 +40,7 @@ class Auth extends React.Component {
 
   render() {
     if (!this.state.signinCheck) {
-      return <div>Loading...</div>;
+      return <RedirectLoader />;
     }
 
     if (this.state.signedIn) {
