@@ -21,7 +21,6 @@ export default () => {
     <Router>
       <Switch>
         <Auth>
-          <Route path="/" exact component={SignIn} />
           <Header user={user}>
             <Route path="/main" exact component={Main} />
             <Route path="/expense" exact component={Expenditure} />
@@ -31,6 +30,7 @@ export default () => {
           </Header>
         </Auth>
       </Switch>
+      <Route path="/" exact component={SignIn} />
     </Router>
   );
 };
