@@ -29,7 +29,6 @@ class Auth extends React.Component {
             signedIn: false,
           });
         }
-        console.log(this.state);
       }
     });
   };

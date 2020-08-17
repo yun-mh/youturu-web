@@ -3,6 +3,13 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -10,14 +17,15 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
   },
   box: {
-    marginTop: "13.5em",
-    marginLeft: "auto",
-    textAlign: "center",
+    width: "100%",
+    paddingTop: "10em",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   data: {
-    display: "inline-block",
     width: "40em",
-    marginLeft: "2em",
     padding: "0em",
   },
   table: {
@@ -29,26 +37,34 @@ const useStyles = makeStyles((theme) => ({
   dateData: {
     textAlign: "center",
     width: "30em",
-    padding: "0em",
+    padding: "1em",
     marginLeft: "auto",
     backgroundColor: "#62BDFF",
     color: "#ffffff",
     fontSize: "1.75em",
-    border: "2px solid #C7C7C7",
+    border: "1px solid #C7C7C7",
+  },
+  itemHeader: {
+    width: "50%",
+    fontSize: "1.3em",
+    textAlign: "center",
+    backgroundColor: "#c4e6ff",
+    color: "#7f7f7f",
+    border: "1px solid #C7C7C7",
   },
   revData: {
     width: "50%",
-    paddingTop: "0em",
     fontSize: "1.5em",
+    textAlign: "center",
     color: "#003AEE",
-    border: "2px solid #C7C7C7",
+    border: "1px solid #C7C7C7",
   },
   expData: {
     width: "50%",
-    paddingTop: "0em",
     fontSize: "1.5em",
+    textAlign: "center",
     color: "#EE0000",
-    border: "2px solid #C7C7C7",
+    border: "1px solid #C7C7C7",
   },
 }));
 
@@ -67,42 +83,55 @@ const MainPresenter = ({
       <Grid container spacing={3}>
         <div className={classes.box}>
           <div className={classes.data}>
-            <table className={classes.table}>
-              <thead>
-                <tr>
-                  <th className={classes.dateData} colSpan="2">
-                    2020年{new Date().getMonth() + 1}月現在
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className={classes.revData}>￥{monthlyRevenueTotal}</td>
-                  <td className={classes.expData}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={classes.dateData} colSpan="2">
+                    今月（{new Date().getFullYear()}年
+                    {new Date().getMonth() + 1}月）
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell className={classes.itemHeader}>収入</TableCell>
+                  <TableCell className={classes.itemHeader}>支出</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className={classes.revData}>
+                    ￥{monthlyRevenueTotal}
+                  </TableCell>
+                  <TableCell className={classes.expData}>
                     ￥{monthlyExpenditureTotal}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
           <div className={classes.data}>
-            <table className={classes.table}>
-              <thead>
-                <tr>
-                  <th className={classes.dateData} colSpan="2">
-                    2020年現在
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className={classes.revData}>￥{yearlyRevenueTotal}</td>
-                  <td className={classes.expData}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={classes.dateData} colSpan="2">
+                    今年（{new Date().getFullYear()}年）
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell className={classes.itemHeader}>収入</TableCell>
+                  <TableCell className={classes.itemHeader}>支出</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className={classes.revData}>
+                    ￥{yearlyRevenueTotal}
+                  </TableCell>
+                  <TableCell className={classes.expData}>
                     ￥{yearlyExpenditureTotal}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </Grid>

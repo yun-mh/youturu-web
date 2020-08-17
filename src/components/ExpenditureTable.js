@@ -189,7 +189,7 @@ export default function ExpenditureTable({
         eachCategory={eachCategory}
         handleEachCategory={handleEachCategory}
       />
-      <Table className={classes.table} aria-label="custom pagination table">
+      <Table className={classes.table}>
         <TableHead>
           <TableRow>
             <TableCell style={{ width: 160 }} align="center">

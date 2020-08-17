@@ -25,10 +25,9 @@ const SearchButton = withStyles((theme) => ({
   root: {
     marginLeft: "1em",
     color: "#ffffff",
-    backgroundColor: "#333333",
+    backgroundColor: "#7a7a7a",
     "&:hover": {
-      backgroundColor: "#ffffff",
-      backgroundColor: "#000000",
+      backgroundColor: "#353535",
     },
   },
 }))(Button);
@@ -39,11 +38,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  fieldBox: {
+    display: "flex",
+    alignItems: "center",
+  },
   selectField: {
     display: "flex",
     width: "5em",
     height: "2.55em",
     cursor: "pointer",
+    marginRight: "7px",
   },
   textField: {
     display: "flex",
@@ -74,12 +78,7 @@ const RevenuePresenter = ({
   dateYear,
   setDateYear,
   dateMonth,
-  minDate,
-  setMinDate,
-  maxDate,
-  setMaxDate,
   setDateMonth,
-  selectDate,
   search,
   addOpen,
   modifyId,
@@ -103,43 +102,47 @@ const RevenuePresenter = ({
       </Typography>
       <Box container="true" mt={3} className={classes.toolBox}>
         <div className={classes.textField}>
-          <TextField
-            id="outlined-number"
-            type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            size="small"
-            value={dateYear}
-            onChange={(e) => setDateYear(e.target.value)}
-          />
-          <span>年</span>
-          <Select
-            native
-            className={classes.selectField}
-            variant="outlined"
-            size="small"
-            value={dateMonth}
-            onChange={(e) => setDateMonth(e.target.value)}
-          >
-            <option value={0} defaultValue>
-              {" "}
-            </option>
-            <option value={1}> 1 </option>
-            <option value={2}> 2 </option>
-            <option value={3}> 3 </option>
-            <option value={4}> 4 </option>
-            <option value={5}> 5 </option>
-            <option value={6}> 6 </option>
-            <option value={7}> 7 </option>
-            <option value={8}> 8 </option>
-            <option value={9}> 9 </option>
-            <option value={10}> 10 </option>
-            <option value={11}> 11 </option>
-            <option value={12}> 12 </option>
-          </Select>
-          <span>月</span>
+          <Box className={classes.fieldBox} mr={2}>
+            <TextField
+              id="outlined-number"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              size="small"
+              value={dateYear}
+              onChange={(e) => setDateYear(e.target.value)}
+            />
+            <span>年</span>
+          </Box>
+          <Box className={classes.fieldBox}>
+            <Select
+              native
+              className={classes.selectField}
+              variant="outlined"
+              size="small"
+              value={dateMonth}
+              onChange={(e) => setDateMonth(e.target.value)}
+            >
+              <option value={0} defaultValue>
+                {" "}
+              </option>
+              <option value={1}> 1 </option>
+              <option value={2}> 2 </option>
+              <option value={3}> 3 </option>
+              <option value={4}> 4 </option>
+              <option value={5}> 5 </option>
+              <option value={6}> 6 </option>
+              <option value={7}> 7 </option>
+              <option value={8}> 8 </option>
+              <option value={9}> 9 </option>
+              <option value={10}> 10 </option>
+              <option value={11}> 11 </option>
+              <option value={12}> 12 </option>
+            </Select>
+            <span>月</span>
+          </Box>
           <SearchButton
             variant="contained"
             className={classes.button}
