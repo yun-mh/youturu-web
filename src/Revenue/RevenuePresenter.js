@@ -5,9 +5,11 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
+import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
 import { green } from "@material-ui/core/colors";
 import RevenueTable from "../components/RevenueTable";
+import { Select } from "@material-ui/core";
 
 const AddButton = withStyles((theme) => ({
   root: {
@@ -19,11 +21,29 @@ const AddButton = withStyles((theme) => ({
   },
 }))(Button);
 
+const SearchButton = withStyles((theme) => ({
+  root: {
+    marginLeft: "1em",
+    color: "#ffffff",
+    backgroundColor: "#333333",
+    "&:hover": {
+      backgroundColor: "#ffffff",
+      backgroundColor: "#000000",
+    },
+  },
+}))(Button);
+
 const useStyles = makeStyles((theme) => ({
   toolBox: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  selectField: {
+    display: "flex",
+    width: "5em",
+    height: "2.55em",
+    cursor: "pointer",
   },
   textField: {
     display: "flex",
@@ -51,6 +71,16 @@ const RevenuePresenter = ({
   setAmount,
   content,
   setContent,
+  dateYear,
+  setDateYear,
+  dateMonth,
+  minDate,
+  setMinDate,
+  maxDate,
+  setMaxDate,
+  setDateMonth,
+  selectDate,
+  search,
   addOpen,
   modifyId,
   modifyOpen,
@@ -81,18 +111,43 @@ const RevenuePresenter = ({
             }}
             variant="outlined"
             size="small"
+            value={dateYear}
+            onChange={(e) => setDateYear(e.target.value)}
           />
           <span>年</span>
-          <TextField
-            id="outlined-number"
-            type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
+          <Select
+            native
+            className={classes.selectField}
             variant="outlined"
             size="small"
-          />
+            value={dateMonth}
+            onChange={(e) => setDateMonth(e.target.value)}
+          >
+            <option value={0} defaultValue>
+              {" "}
+            </option>
+            <option value={1}> 1 </option>
+            <option value={2}> 2 </option>
+            <option value={3}> 3 </option>
+            <option value={4}> 4 </option>
+            <option value={5}> 5 </option>
+            <option value={6}> 6 </option>
+            <option value={7}> 7 </option>
+            <option value={8}> 8 </option>
+            <option value={9}> 9 </option>
+            <option value={10}> 10 </option>
+            <option value={11}> 11 </option>
+            <option value={12}> 12 </option>
+          </Select>
           <span>月</span>
+          <SearchButton
+            variant="contained"
+            className={classes.button}
+            startIcon={<SearchIcon />}
+            onClick={search}
+          >
+            照会
+          </SearchButton>
         </div>
         <div>
           <AddButton

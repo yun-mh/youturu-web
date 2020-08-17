@@ -192,30 +192,34 @@ export default function RevenueTable({
       <Table className={classes.table} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <TableCell align="center">日付</TableCell>
-            <TableCell align="center">科目</TableCell>
-            <TableCell align="center">内容</TableCell>
-            <TableCell align="center">金額</TableCell>
-            <TableCell align="center">修正</TableCell>
-            <TableCell align="center">削除</TableCell>
+            <TableCell style={{ width: 160 }} align="center">
+              日付
+            </TableCell>
+            <TableCell style={{ width: 160 }} align="center">
+              科目
+            </TableCell>
+            <TableCell style={{ width: 160 }} align="center">
+              内容
+            </TableCell>
+            <TableCell style={{ width: 160 }} align="center">
+              金額
+            </TableCell>
+            <TableCell style={{ width: 160 }} align="center">
+              修正
+            </TableCell>
+            <TableCell style={{ width: 160 }} align="center">
+              削除
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {newRows.map((row) => (
             <TableRow key={row.id}>
-              <TableCell style={{ width: 160 }} align="center">
-                {row.date}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                {row.type}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                {row.content}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                {row.amount}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
+              <TableCell align="center">{row.date}</TableCell>
+              <TableCell align="center">{row.type}</TableCell>
+              <TableCell align="center">{row.content}</TableCell>
+              <TableCell align="center">{row.amount}</TableCell>
+              <TableCell align="center">
                 <ModifyButton
                   aria-label="modify"
                   onClick={() => handleModify(row.id)}
@@ -223,7 +227,7 @@ export default function RevenueTable({
                   <CreateIcon />
                 </ModifyButton>
               </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
+              <TableCell align="center">
                 <DeleteButton
                   aria-label="delete"
                   onClick={() => handleDelete(row.id)}

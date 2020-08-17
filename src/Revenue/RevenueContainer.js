@@ -17,9 +17,19 @@ const RevenueContainer = () => {
   const [addOpen, setAddOpen] = useState(false);
   const [modifyId, setModifyId] = useState("");
   const [modifyOpen, setModifyOpen] = useState(false);
+  const [dateYear, setDateYear] = useState("");
+  const [dateMonth, setDateMonth] = useState("");
+  const [dateNow, setDateNow] = useState(new Date());
+  const [firstDate, setFirstDate] = useState(
+    new Date(dateNow.getFullYear(), 0)
+  );
+  const [lastDate, setLastDate] = useState(
+    new Date(dateNow.getFullYear() + 1, 0)
+  );
+  const [flag, setFlag] = useState(false);
 
   const fetchTypes = async () => {
-    const target = await user;
+    const target = user;
     let typesData = [];
     await firestore
       .collection("income_category")
@@ -54,12 +64,14 @@ const RevenueContainer = () => {
   };
 
   const fetchRows = async () => {
-    const target = await user;
+    const target = user;
     let rowsData = [];
     if (target) {
       await firestore
         .collection("income")
         .where("id", "==", target.email)
+        .where("date", ">=", firstDate)
+        .where("date", "<=", lastDate)
         .get()
         .then((docs) => {
           docs.forEach((doc) => {
@@ -81,7 +93,37 @@ const RevenueContainer = () => {
   useEffect(() => {
     fetchTypes();
     fetchRows();
-  }, []);
+    selectDate();
+    setFlag(false);
+  }, [dateYear, flag, dateMonth]);
+
+  const selectDate = () => {
+    if (dateYear > 0) {
+      if (dateMonth > 0) {
+        setDateNow(new Date(dateYear, dateMonth));
+      } else {
+        setDateNow(new Date(dateYear, 0));
+      }
+    }
+  };
+
+  const search = () => {
+    setFlag(true);
+    if (dateYear > 0) {
+      if (dateMonth > 0) {
+        setFirstDate(
+          new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1)
+        );
+        setLastDate(new Date(dateNow.getFullYear(), dateNow.getMonth(), 0));
+      } else {
+        setFirstDate(new Date(dateNow.getFullYear(), 0));
+        setLastDate(new Date(dateNow.getFullYear() + 1, 0));
+      }
+    } else {
+      setFirstDate(new Date(dateNow.getFullYear(), 0));
+      setLastDate(new Date(dateNow.getFullYear() + 1, 0));
+    }
+  };
 
   const handleAddOpen = () => {
     setAddOpen(true);
@@ -106,7 +148,7 @@ const RevenueContainer = () => {
   };
 
   const handleSubmit = async () => {
-    const target = await user;
+    const target = user;
 
     if (date === "" || amount === "" || content === "") {
       alert("すべての項目を入力してください。");
@@ -144,6 +186,8 @@ const RevenueContainer = () => {
     setEachCategory([...types[0].types]);
     setAmount("");
     setContent("");
+    selectDate();
+    setFlag(true);
     handleAddClose();
   };
 
@@ -195,6 +239,8 @@ const RevenueContainer = () => {
         setAmount("");
         setContent("");
         setModifyId("");
+        selectDate();
+        setFlag(true);
         handleModifyClose();
       });
   };
@@ -216,6 +262,10 @@ const RevenueContainer = () => {
       setRows={setRows}
       date={date}
       setDate={setDate}
+      dateYear={dateYear}
+      setDateYear={setDateYear}
+      dateMonth={dateMonth}
+      setDateMonth={setDateMonth}
       genre={genre}
       type={type}
       setType={setType}
@@ -232,6 +282,8 @@ const RevenueContainer = () => {
       setModifyId={setModifyId}
       modifyOpen={modifyOpen}
       setModifyOpen={setModifyOpen}
+      selectDate={selectDate}
+      search={search}
       handleAddOpen={handleAddOpen}
       handleModifyOpen={handleModifyOpen}
       handleAddClose={handleAddClose}
