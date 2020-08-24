@@ -17,19 +17,19 @@ const ExpenditureContainer = () => {
   const [addOpen, setAddOpen] = useState(false);
   const [modifyId, setModifyId] = useState("");
   const [modifyOpen, setModifyOpen] = useState(false);
-  const [dateYear, setDateYear] = useState("");
-  const [dateMonth, setDateMonth] = useState("");
   const [dateNow, setDateNow] = useState(new Date());
+  const [dateYear, setDateYear] = useState(dateNow.getFullYear());
+  const [dateMonth, setDateMonth] = useState(dateNow.getMonth() + 1);
   const [firstDate, setFirstDate] = useState(
-    new Date(dateNow.getFullYear(), 0)
+    new Date(dateNow.getFullYear(), dateNow.getMonth())
   );
   const [lastDate, setLastDate] = useState(
-    new Date(dateNow.getFullYear() + 1, 0)
+    new Date(dateNow.getFullYear(), dateNow.getMonth() + 1)
   );
   const [flag, setFlag] = useState(false);
 
   const fetchTypes = async () => {
-    const target = await user;
+    const target = user;
     let typesData = [];
     await firestore
       .collection("expense_category")
@@ -55,16 +55,16 @@ const ExpenditureContainer = () => {
             });
           });
         });
-      await setTypes(typesData);
-      await setEachCategory(typesData[0]?.types);
-      await setGenre(typesData[0]?.genre);
-      await setType(typesData[0]?.types[0]);
+      setTypes(typesData);
+      setEachCategory(typesData[0]?.types);
+      setGenre(typesData[0]?.genre);
+      setType(typesData[0]?.types[0]);
       return;
     }
   };
 
   const fetchRows = async () => {
-    const target = await user;
+    const target = user;
     let rowsData = [];
     if (target) {
       await firestore
@@ -148,7 +148,7 @@ const ExpenditureContainer = () => {
   };
 
   const handleSubmit = async () => {
-    const target = await user;
+    const target = user;
 
     if (date === "" || amount === "" || content === "") {
       alert("すべての項目を入力してください。");

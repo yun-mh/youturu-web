@@ -15,7 +15,7 @@ const ItemContainer = () => {
   const [expContent, setExpContent] = useState("");
 
   const fetchTypes = async () => {
-    const target = await user;
+    const target = user;
     let typesRevData = [];
     let typesExpData = [];
 
@@ -32,8 +32,8 @@ const ItemContainer = () => {
             });
           });
         });
-      await setEachRevCategory(typesRevData[0]?.types || []);
-      await setRevType(typesRevData[0]?.types[0]);
+      setEachRevCategory(typesRevData[0]?.types || []);
+      setRevType(typesRevData[0]?.types[0]);
 
       await firestore
         .collection("expense_customized")
@@ -47,22 +47,22 @@ const ItemContainer = () => {
             });
           });
         });
-      await setEachExpCategory(typesExpData[0]?.types || []);
-      await setExpType(typesExpData[0]?.types[0]);
+      setEachExpCategory(typesExpData[0]?.types || []);
+      setExpType(typesExpData[0]?.types[0]);
     }
     return;
   };
 
   useEffect(() => {
     fetchTypes();
-  }, []);
+  });
 
   const handleRevSubmit = async (e) => {
     e.preventDefault();
     e.target.reset();
 
     let exist, docId;
-    const target = await user;
+    const target = user;
 
     if (!revContent) {
       return null;
@@ -107,7 +107,7 @@ const ItemContainer = () => {
 
   const handleRevDelete = async (item) => {
     let docId;
-    const target = await user;
+    const target = user;
 
     await firestore
       .collection("income_customized")
@@ -136,7 +136,7 @@ const ItemContainer = () => {
     e.target.reset();
 
     let exist, docId;
-    const target = await user;
+    const target = user;
 
     if (!expContent) {
       return null;
@@ -181,7 +181,7 @@ const ItemContainer = () => {
 
   const handleExpDelete = async (item) => {
     let docId;
-    const target = await user;
+    const target = user;
 
     await firestore
       .collection("expense_customized")
