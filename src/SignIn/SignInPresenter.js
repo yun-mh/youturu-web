@@ -59,6 +59,7 @@ const SignInPresenter = ({ handleSignin }) => {
             label="Googleアカウントで始める"
             onClick={handleSignin}
             style={{
+              fontSize: "13px",
               marginTop: "16px",
               borderRadius: "5px",
               outline: "none",
