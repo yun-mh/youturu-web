@@ -55,7 +55,8 @@ const ItemContainer = () => {
 
   useEffect(() => {
     fetchTypes();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleRevSubmit = async (e) => {
     e.preventDefault();
