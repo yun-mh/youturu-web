@@ -99,7 +99,7 @@ const RevenueContainer = () => {
   }, [dateYear, flag, dateMonth]);
 
   const selectDate = () => {
-    if (dateYear > 0) {
+    if (dateYear > 0 && dateYear < 10000) {
       if (dateMonth > 0) {
         setDateNow(new Date(dateYear, dateMonth));
       } else {
@@ -110,7 +110,7 @@ const RevenueContainer = () => {
 
   const search = () => {
     setFlag(true);
-    if (dateYear > 0) {
+    if (dateYear > 0 && dateYear < 10000) {
       if (dateMonth > 0) {
         setFirstDate(
           new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1)
@@ -121,8 +121,7 @@ const RevenueContainer = () => {
         setLastDate(new Date(dateNow.getFullYear() + 1, 0));
       }
     } else {
-      setFirstDate(new Date(dateNow.getFullYear(), 0));
-      setLastDate(new Date(dateNow.getFullYear() + 1, 0));
+      alert("有効な年度を入力してください。（範囲：0 ~ 9999）");
     }
   };
 
