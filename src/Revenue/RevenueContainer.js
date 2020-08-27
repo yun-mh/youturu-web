@@ -95,6 +95,7 @@ const RevenueContainer = () => {
     fetchRows();
     selectDate();
     setFlag(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateYear, flag, dateMonth]);
 
   const selectDate = () => {

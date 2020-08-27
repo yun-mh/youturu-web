@@ -23,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
+  logo: {
+    width: "300px",
+    height: "80px",
+    marginBottom: "16px",
+    backgroundImage: `url(${require("../assets/logo.png")})`,
+    backgroundSize: "cover",
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
     textTransform: "capitalize",
@@ -39,9 +46,7 @@ const SignInPresenter = ({ handleSignin }) => {
       <Grid item xs={false} sm={4} md={8} />
       <Grid item xs={12} sm={8} md={4} elevation={6} className={classes.menu}>
         <div className={classes.paper}>
-          <Typography component="h1" variant="h3">
-            ゆーちゅーる
-          </Typography>
+          <div className={classes.logo}></div>
           <Typography
             component="h2"
             variant="subtitle1"

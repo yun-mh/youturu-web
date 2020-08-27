@@ -28,6 +28,20 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
+  titleBox: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    width: "150px",
+    height: "40px",
+    backgroundSize: "cover",
+    backgroundRepeat: "none",
+    backgroundImage: `url(${require("../assets/logo.png")})`,
+  },
   toolbar: {
     paddingRight: 24,
   },
@@ -59,10 +73,6 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButtonHidden: {
     display: "none",
-  },
-  title: {
-    flexGrow: 1,
-    textAlign: "center",
   },
   drawerPaper: {
     position: "relative",
@@ -143,15 +153,9 @@ export default withRouter(({ location: { pathname }, children, user }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            ゆーちゅーる
-          </Typography>
+          <div className={classes.titleBox}>
+            <div className={classes.logo}></div>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
