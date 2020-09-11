@@ -196,7 +196,7 @@ export default function ExpenditureTable({
               日付
             </TableCell>
             <TableCell style={{ width: 160 }} align="center">
-              科目
+              項目
             </TableCell>
             <TableCell style={{ width: 160 }} align="center">
               内容
